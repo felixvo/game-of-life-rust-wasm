@@ -30,6 +30,15 @@ pub enum Cell {
     Alive = 1,
 }
 
+impl Cell {
+    fn toggle(&mut self) {
+        *self = match *self {
+            Cell::Dead => Cell::Alive,
+            Cell::Alive => Cell::Dead,
+        };
+    }
+}
+
 #[wasm_bindgen]
 pub struct Universe {
     width: u32,
@@ -65,28 +74,9 @@ impl Universe {
     pub fn new(width: u32, height: u32) -> Universe {
         let cells = (0..width * height)
             .map(|i| {
-                if js_sys::Math::random() < 0.5 {
-                    return Cell::Alive;
-                }
                 Cell::Dead
             })
             .collect();
-        Universe {
-            width,
-            height,
-            cells,
-        }
-    }
-    pub fn new_with_alives(width: u32, height: u32, alive_cells: Vec<u32>) -> Universe {
-        let cells = (0..width * height)
-            .map(|i| {
-                if alive_cells.contains(&i) {
-                    return Cell::Alive;
-                }
-                Cell::Dead
-            })
-            .collect();
-
         Universe {
             width,
             height,
@@ -102,6 +92,16 @@ impl Universe {
     }
     pub fn cells(&self) -> *const Cell {
         self.cells.as_ptr()
+    }
+
+    pub fn toggle_cell(&mut self, row: u32, col: u32) {
+        let idx = self.get_index(row, col);
+        self.cells[idx].toggle();
+    }
+
+    pub fn set_alive(&mut self, row: u32, col: u32) {
+        let idx = self.get_index(row, col);
+        self.cells[idx] = Cell::Alive;
     }
 
     pub fn tick(&mut self) {
