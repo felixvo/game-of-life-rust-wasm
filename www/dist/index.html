@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Hello wasm-pack!</title>
+    <style>
+        body {
+            position: absolute;
+            top: 0;
+            left: 0;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        button{
+            width: 100px;
+            height: 50px;
+        }
+    </style>
+</head>
+<body>
+<noscript
+>This page contains webassembly and javascript content, please enable
+    javascript in your browser.
+</noscript
+>
+<canvas id="game-of-life-canvas"></canvas>
+<script src="./bootstrap.js"></script>
+<br/>
+<div>Draw on the board and click Play to start</div>
+<div>
+    <button id="play-pause">▶</button>
+    <button id="reset-btn">Reset</button>
+</div>
+<div>
+    Pick your favorite color:
+    <input
+            type="color"
+            id="alive-cell-colorpicker"
+            name="alive-cell-colorpicker"
+            value="#e66465"
+    />
+</div>
+<div>
+    Width:
+    <input
+            type="number"
+            id="width-input"
+            value="100"
+    />
+</div>
+<div>
+    Height:
+    <input
+            type="number"
+            id="height-input"
+            value="50"
+    />
+</div>
+<div>
+    Speed:
+    <input id="speed" type="range" min="1" max="1000" value="950">
+</div>
+</body>
+</html>
