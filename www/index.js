@@ -11,8 +11,8 @@ aliveCellColorPicker.addEventListener("change", (event) => {
     ALIVE_COLOR = event.target.value;
 });
 
-const width = 120;
-const height = 60;
+let width = document.getElementById('width-input').value;
+let height = document.getElementById('height-input').value;
 
 let aliveCells = [];
 
@@ -103,19 +103,23 @@ const renderLoop = () => {
         requestAnimationFrame(renderLoop)
     }, 50);
 };
+let started = false;
 
 function start() {
+    if (started) {
+        return
+    }
+    started = true;
     universe = Universe.new_with_alives(width, height, aliveCells);
     requestAnimationFrame(renderLoop);
 }
 
 function reset() {
+    started = false;
     clearInterval(renderLoopInterval)
-    aliveCells = [];
-    universe = Universe.new(width, height);
+    ctx.clearRect(0, 0, width, height);
     for (let row = 0; row < height; row++) {
         for (let col = 0; col < width; col++) {
-            const idx = getIndex(row, col);
 
             ctx.fillStyle = DEAD_COLOR;
 
@@ -127,6 +131,12 @@ function reset() {
             );
         }
     }
+    width = document.getElementById('width-input').value;
+    height = document.getElementById('height-input').value;
+    canvas.width = (CELL_SIZE) * width;
+    canvas.height = (CELL_SIZE) * height;
+    aliveCells = [];
+    universe = Universe.new(width, height);
     drawGrid();
 }
 
